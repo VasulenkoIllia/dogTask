@@ -1,0 +1,17 @@
+version: '1'
+
+services:
+  corsets_api:
+    image: mysql:5
+    container_name: corsets_api
+    environment:
+      MYSQL_ROOT_PASSWORD: corsets
+      MYSQL_USER: corsets
+      MYSQL_DATABASE: corsets
+      MYSQL_PASSWORD: corsets
+    stdin_open: true
+    tty: true
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./data:/var/lib/mysql
