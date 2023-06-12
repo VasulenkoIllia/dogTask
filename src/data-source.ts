@@ -4,8 +4,10 @@ import * as path from "path";
 import * as process from "process";
 
 dotenv.config()
-const entityPath = path.join(__dirname, "../dist", "entity", "*.entity.{js,ts}");
-const migrationPath = path.join(__dirname, "../dist", "migrations", "*.{js,ts}");
+
+const entityPath = path.join(__dirname,  "entities", "*.entity.{js,ts}");
+const migrationPath = path.join(__dirname,  "migrations", "*.{js,ts}");
+console.log(entityPath)
 export const AppDataSource  = {
     dialect: (process.env.DB_TYPE) as "mysql" | "mariadb",
     host: process.env.DB_HOST,
@@ -15,7 +17,8 @@ export const AppDataSource  = {
     database: process.env.DB_DATABASE,
     synchronize: true,
     logging: false,
-    entities: [entityPath],
+    autoLoadModels:true,
+    models: [entityPath],
     migrations: [migrationPath],
     subscribers: [],
 

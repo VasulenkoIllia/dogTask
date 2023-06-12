@@ -19,13 +19,12 @@ export class DogHealthService {
     ) {
     }
     checkServerStats() {
-        console.log(`http://` + process.env.HOST + process.env.PORT)
         return this.health.check([
             () => this.db.pingCheck('database'),
             () => this.disk.checkStorage('storage', { path: 'C:\\\\', thresholdPercent: 0.9 }),
             () => this.memory.checkHeap('memory_heap', 150 * 1024 * 1024),
-            () => this.http.pingCheck('HTTP', `http://` + process.env.HOST + process.env.PORT),
-            () => this.http.pingCheck('HTTPS', `https://` + process.env.HOST + process.env.PORT),
+            () => this.http.pingCheck('HTTP', `http://${process.env.HOST}${process.env.PORT}`),
+            () => this.http.pingCheck('HTTPS', `https://${process.env.HOST}${process.env.PORT}`),
         ]);
     }
 
