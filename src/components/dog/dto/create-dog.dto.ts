@@ -16,8 +16,8 @@ export class CreateDogDto{
     @ApiProperty()
     @IsNotEmpty()
     @IsInt()
-    @Min(10,{
-        message: 'is not a number',
+    @Min(0,{
+        message: 'tail_length must be > 0',
     } )
     readonly tail_length: number
 
