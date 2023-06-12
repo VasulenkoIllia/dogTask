@@ -3,12 +3,12 @@ version: '1'
 services:
   corsets_api:
     image: mysql:5
-    container_name: corsets_api
+    container_name: dogs_api
     environment:
-      MYSQL_ROOT_PASSWORD: corsets
-      MYSQL_USER: corsets
-      MYSQL_DATABASE: corsets
-      MYSQL_PASSWORD: corsets
+      MYSQL_ROOT_PASSWORD: dogs
+      MYSQL_USER: dogs
+      MYSQL_DATABASE: dogs
+      MYSQL_PASSWORD: dogs
     stdin_open: true
     tty: true
     ports:
