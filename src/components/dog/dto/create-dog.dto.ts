@@ -2,14 +2,9 @@ import {ApiProperty} from "@nestjs/swagger";
 import {
     Length,
     IsString,
-    IsInt,
     Min,
     IsNotEmpty,
-    validate,
-    isValidationOptions,
     IsNumber,
-    Max,
-    MAX,
 } from 'class-validator';
 
 export class CreateDogDto{

@@ -1,9 +1,10 @@
-import {HttpException, HttpStatus, Inject, Injectable} from '@nestjs/common';
+import {HttpException, HttpStatus, Injectable} from '@nestjs/common';
 import Dog from "../../entities/dog.entity";
 import {CreateDogDto} from "./dto/create-dog.dto";
 import {DogDto} from "./dto/dog.dto";
 import {InjectModel} from "@nestjs/sequelize";
 import {DogsQueryDto} from "./dto/dogsQuery.dto";
+import {where} from "sequelize";
 
 @Injectable()
 export class DogService {
@@ -38,16 +39,20 @@ export class DogService {
         return true
     }
     async pagination(dogQuery:DogsQueryDto){
-        let paginationOptions = {offset: 0, limit:2}
+        let options = {offset: 0, limit:2}
         if(dogQuery.pageSize && dogQuery.pageNumber){
-            paginationOptions.offset = dogQuery.pageSize * (dogQuery.pageNumber - 1)
-            paginationOptions.limit = dogQuery.pageSize
+            options.offset = dogQuery.pageSize * (dogQuery.pageNumber - 1)
+            options.limit = dogQuery.pageSize
         }
-        const dogs = await this.dogRepository.findAll<Dog>(paginationOptions);
+        if (dogQuery.attribute && dogQuery.order) {
+            options['order'] = [[dogQuery.attribute, dogQuery.order ]]
+            console.log(options)
+        }
+        const dogs = await this.dogRepository.findAll<Dog>(options);
         const total = await this.dogRepository.count();
         return {
             dogs,
-            total
+            total,
         }
     }
 }

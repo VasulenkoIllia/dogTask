@@ -6,7 +6,6 @@ import {
     MemoryHealthIndicator,
     SequelizeHealthIndicator
 } from "@nestjs/terminus";
-import {rootLogger} from "ts-jest";
 
 @Injectable()
 export class DogHealthService {
@@ -16,11 +15,10 @@ export class DogHealthService {
         private readonly disk: DiskHealthIndicator,
         private memory: MemoryHealthIndicator,
         private http: HttpHealthIndicator
-    ) {
-    }
+    ) {}
     checkServerStats() {
         return this.health.check([
-            () => this.db.pingCheck('database'),
+            () => this.db.pingCheck('database', { timeout: 2000 }),
             () => this.disk.checkStorage('storage', { path: 'C:\\\\', thresholdPercent: 0.9 }),
             () => this.memory.checkHeap('memory_heap', 150 * 1024 * 1024),
             () => this.http.pingCheck('HTTP', `http://${process.env.HOST}${process.env.PORT}`),
