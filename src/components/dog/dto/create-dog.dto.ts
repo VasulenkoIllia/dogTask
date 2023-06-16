@@ -23,13 +23,13 @@ export class CreateDogDto{
     @ApiProperty()
     @IsNotEmpty()
     @IsNumber()
-    @Min(0 )
+    @Min(0.1 )
     readonly tail_length: number
 
 
     @ApiProperty()
     @IsNotEmpty()
     @IsNumber()
-    @Min(0 )
+    @Min(0.1 )
     readonly weight: number
 }

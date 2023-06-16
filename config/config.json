@@ -1,0 +1,9 @@
+{
+
+    "username": "dogs",
+    "password": "dogs",
+    "database": "dogs",
+    "host": "localhost",
+    "dialect": "mysql"
+
+}
