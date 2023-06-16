@@ -16,13 +16,13 @@ export class DogController {
         @Body() createDogDto: CreateDogDto):Promise<CreateDogDto>{
         return this.dogService.create(createDogDto)
     }
+    // @Get()
+    // findAll(): Promise<DogDto[]>{
+    //     return this.dogService.findAll()
+    // }
     @Get()
-    findAll(): Promise<DogDto[]>{
-        return this.dogService.findAll()
-    }
-    @Get('pagination')
-    pagination(@Query() dogQuery:DogsQueryDto, ): Promise<{ dogs:DogDto[] }>{
-        return this.dogService.pagination(dogQuery)
+    findAll(@Query() dogQuery:DogsQueryDto, ): Promise<{ dogs:DogDto[] }>{
+        return this.dogService.findAll(dogQuery)
     }
 
 

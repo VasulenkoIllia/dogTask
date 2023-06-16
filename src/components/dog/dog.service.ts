@@ -12,44 +12,53 @@ export class DogService {
         @InjectModel(Dog)
         private readonly dogRepository: typeof Dog
     ) {}
-    async findAll(){
-        const dogs = await this.dogRepository.findAll<Dog>();
-        return dogs.map(dog =>new DogDto(dog))
-    }
-
-    async getDogById(id:string){
+    async getDogById(id:string):Promise<DogDto>{
         const dog = await this.dogRepository.findByPk<Dog>(id)
         if (!dog){
             throw new HttpException(
-                `User with id ${id} not found`,
+                `Dog with id ${id} not found`,
                 HttpStatus.NOT_FOUND
             )
         }
         return new DogDto(dog)
     }
-    async create(createDogDto: CreateDogDto){
-        const dog =  await this.dogRepository.create(createDogDto)
-        return new DogDto(dog)
-
+    async create(createDogDto: CreateDogDto):Promise<DogDto>{
+        try {
+            const dog =  await this.dogRepository.create(createDogDto)
+            return new DogDto(dog)
+        }
+        catch {
+           throw new HttpException(
+                `Dog with name ${createDogDto.name} already exists`,
+                HttpStatus.BAD_REQUEST
+            )
+        }
     }
 
     async remove(id: string): Promise<boolean> {
-        const dog = await this.dogRepository.findByPk<Dog>(id)
-        await dog.destroy()
-        return true
+        try {
+            const dog = await this.dogRepository.findByPk<Dog>(id)
+            await dog.destroy()
+            return true
+        }
+        catch {
+            throw new HttpException(
+                `Dog with id ${id} not found`,
+                HttpStatus.NOT_FOUND
+            )
+        }
     }
-    async pagination(dogQuery:DogsQueryDto){
+    async findAll(dogQuery:DogsQueryDto):Promise<{dogs:DogDto[],total: number}>{
         let options = {offset: 0, limit:2}
         if(dogQuery.pageSize && dogQuery.pageNumber){
             options.offset = dogQuery.pageSize * (dogQuery.pageNumber - 1)
             options.limit = dogQuery.pageSize
         }
-        if (dogQuery.attribute && dogQuery.order) {
-            options['order'] = [[dogQuery.attribute, dogQuery.order ]]
-            console.log(options)
+        if (dogQuery.attribute) {
+            options['order'] = [[dogQuery.attribute, dogQuery.order || 'asc' ]]
         }
-        const dogs = await this.dogRepository.findAll<Dog>(options);
-        const total = await this.dogRepository.count();
+        const dogs:Dog[] = await this.dogRepository.findAll<Dog>(options);
+        const total:number = await this.dogRepository.count();
         return {
             dogs,
             total,
