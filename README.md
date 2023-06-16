@@ -6,9 +6,9 @@ $ npm i
 $ cd docker
 $ docker comose up -d
 #seed DB create
-$npx sequelize-cli db:seed:all
+$ npx sequelize-cli db:seed:all
 #seed DB delete
-npx sequelize-cli db:seed:undo
+$ npx sequelize-cli db:seed:undo
 #run progect
 $ npm run start
 ```
